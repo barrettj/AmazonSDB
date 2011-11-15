@@ -12,6 +12,7 @@ Supported Operations
 A full list of SDB Operations (queries) can be found here:
 http://docs.amazonwebservices.com/AmazonSimpleDB/latest/DeveloperGuideindex.html?SDB_API_Operations.html
 Currently, the following of these are implemented: (Covers the full domain as of 8/14/2012)
+
 * ListDomains
 * DomainMetadata
 * CreateDomain
