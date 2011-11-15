@@ -1,6 +1,6 @@
 
 #import "AppDelegate.h"
-#import "APIKey.h"
+
 
 @interface AppDelegate() {
     //SDBOperation *currentOperation;
@@ -115,10 +115,13 @@
  */
 
 - (void)sdbExample {
-    if ([SECRET_KEY isEqualToString:@""] || [ACCESS_KEY isEqualToString:@""]) {
-        NSLog(@"Add your API keys to APIKey.h");
+    [SDB setAccessKey:ACCESS_KEY andSecretKey:SECRET_KEY];
+    
+    if (![SDB accessKeysSet]) {
+        NSLog(@"Add your API keys!");
         exit(0);
     }
+    
     selectorIndex = 0;
     selectors_ = [NSArray arrayWithObjects:
                   [NSValue valueWithPointer:@selector(createNewDomain)], 

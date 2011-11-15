@@ -57,12 +57,18 @@
     BOOL                hasNextToken_;
     NSString            *currentItemName_;
     NSString            *currentKey_;
+    NSString            *accessKey_;
+    NSString            *secretKey_;
 }
 
 @property (copy, nonatomic)     NSString            *regionEndPoint;
 @property (copy, nonatomic)     NSString            *version;
 @property (readonly, nonatomic) NSMutableDictionary *responseDictionary;
 @property (readonly, nonatomic) BOOL                hasNextToken;
+
+@property (copy, nonatomic)     NSString            *accessKey;
+@property (copy, nonatomic)     NSString            *secretKey;
+
 
 - (void)addToken:(NSString *)token;
 - (NSString *)signedUrlString;

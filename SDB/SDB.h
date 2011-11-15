@@ -24,6 +24,9 @@ typedef void (^SDBReceiveDataBlock)(NSDictionary*, SDBOperation*);
 
 @property (readwrite, copy) SDBReceiveDataBlock onReceivedData;
 
++ (void)setAccessKey:(NSString*)access andSecretKey:(NSString*)secret;
++ (BOOL)accessKeysSet;
+
 + (void)selectWithExpression:(NSString *)expression block:(SDBReceiveDataBlock)block;
 + (void)getItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
 
@@ -38,5 +41,7 @@ typedef void (^SDBReceiveDataBlock)(NSDictionary*, SDBOperation*);
 
 + (void)createDomain:(NSString *)domain block:(SDBReceiveDataBlock)block;
 + (void)deleteDomain:(NSString *)domain block:(SDBReceiveDataBlock)block;
+
+
 
 @end

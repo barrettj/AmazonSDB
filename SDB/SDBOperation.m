@@ -7,8 +7,8 @@
 //
 
 #import "SDBOperation.h"
-#import "APIKey.h"
 #import <CommonCrypto/CommonHMAC.h>
+#import "SDB.h"
 
 @interface SDBOperation()
 
@@ -21,7 +21,7 @@
 @end
 
 @implementation SDBOperation
-@synthesize regionEndPoint, version, responseDictionary = responseDictionary_, hasNextToken = hasNextToken_;
+@synthesize regionEndPoint, version, responseDictionary = responseDictionary_, hasNextToken = hasNextToken_, accessKey = _accessKey, secretKey = _secretKey;
 
 /*
  Sets up parameters common to all SDB Operations
@@ -114,7 +114,7 @@ didStartElement:(NSString *)elementName
     // create GET request lines
     [canonicalString appendString:@"GET\n"];
     [canonicalString appendFormat:@"%@\n/\n",self.regionEndPoint];
-    [canonicalString appendFormat:@"AWSAccessKeyId=%@",ACCESS_KEY];
+    [canonicalString appendFormat:@"AWSAccessKeyId=%@",self.accessKey];
     
     // append sorted parameters
     NSArray *keys = [[parameters_ allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
@@ -132,7 +132,7 @@ didStartElement:(NSString *)elementName
 - (NSString *)signature {
     
     // encrypt the canonical string
-    NSData *encryptedData = [self encrypt:[self canonicalString] withKey:SECRET_KEY];
+    NSData *encryptedData = [self encrypt:[self canonicalString] withKey:self.secretKey];
     
     // encode the data as a base 64 string
     NSString *encodedData = [self base64encode:encryptedData];
@@ -152,7 +152,7 @@ didStartElement:(NSString *)elementName
     [parameters_ setValue:[self signature] forKey:@"Signature"];
     
     [url appendFormat:@"https://%@?", self.regionEndPoint];
-    [url appendFormat:@"AWSAccessKeyId=%@",ACCESS_KEY];
+    [url appendFormat:@"AWSAccessKeyId=%@",self.accessKey];
     [parameters_ enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *val, BOOL *stop) {
         [url appendFormat:@"&%@=%@",key,[self escapedSelectWithString:val]];
     }];
