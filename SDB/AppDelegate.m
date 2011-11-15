@@ -42,70 +42,110 @@
 
 - (void)createNewDomain {
     [SDB createDomain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
-        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        if (operation.failed)
+            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+        else
+            NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        
         [self doNext];
     }];
 }
 
 - (void)deleteDomain {
     [SDB deleteDomain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
-        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        if (operation.failed)
+            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+        else
+            NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        
         [self doNext];
     }];
 }
 
 - (void)putItem1 {
     [SDB putItem:@"Item1" withAttributes:[self exampleItem] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
-        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        if (operation.failed)
+            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+        else
+            NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        
         [self doNext];
     }];
 }
 
 - (void)putItem2 {
     [SDB putItem:@"Item2" withAttributes:[self exampleItem] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
-        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        if (operation.failed)
+            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+        else
+            NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        
         [self doNext];
     }];
 }
 
 - (void)putItem3 {
     [SDB putItem:@"Item3" withAttributes:[self exampleItem] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
-        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        if (operation.failed)
+            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+        else
+            NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        
         [self doNext];
     }];
 }
 
 - (void)batchPutItems {
     [SDB putItems:[self exampleItems] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
-        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        if (operation.failed)
+            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+        else
+            NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        
         [self doNext];
     }];
 }
 
 - (void)listItems {
     [SDB selectWithExpression:@"select * from Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
-        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        if (operation.failed)
+            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+        else
+            NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        
         [self doNext];
     }];
 }
 
 - (void)getItem {
     [SDB getItem:@"Item1" withAttributes:[NSArray arrayWithObjects:@"Attribute1", @"Attribute2", nil] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
-        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        if (operation.failed)
+            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+        else
+            NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        
         [self doNext];
     }];
 }
 
 - (void)deleteItem {
     [SDB deleteItem:@"Item1" withAttributes:nil domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
-        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        if (operation.failed)
+            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+        else
+            NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        
         [self doNext];
     }];
 }
 
 - (void)batchDeleteItems {
     [SDB deleteItems:[self exampleItems] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
-        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        if (operation.failed)
+            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+        else
+            NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        
         [self doNext];
     }];
 }

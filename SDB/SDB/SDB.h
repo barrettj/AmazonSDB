@@ -18,9 +18,13 @@
 #import "SDBBatchPut.h"
 #import "SDBBatchDelete.h"
 
+#define SECONDS_BEFORE_TIMEOUT 45
+
 typedef void (^SDBReceiveDataBlock)(NSDictionary*, SDBOperation*);
 
-@interface SDB : NSObject <NSURLConnectionDataDelegate>
+@interface SDB : NSObject <NSURLConnectionDataDelegate> {
+    NSTimer *timeoutTimer;
+}
 
 @property (readwrite, copy) SDBReceiveDataBlock onReceivedData;
 

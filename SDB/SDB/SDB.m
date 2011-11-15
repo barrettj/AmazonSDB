@@ -29,12 +29,22 @@
     return self;
 }
 
+- (void)resetTimeoutTimer {
+    if (timeoutTimer) {
+        [timeoutTimer invalidate];
+    }
+    
+    timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:SECONDS_BEFORE_TIMEOUT target:self selector:@selector(timeoutReached:) userInfo:nil repeats:NO];
+}
 
 - (void)startRequest {
     NSURL *sdbUrl = [NSURL URLWithString:currentOperation_.signedUrlString];
     NSURLRequest *sdbReq = [NSURLRequest requestWithURL:sdbUrl];
     NSURLConnection *sdbConn = [NSURLConnection connectionWithRequest:sdbReq delegate:self];
     if (!sdbConn) NSLog(@"Unable to initialize connection; check action parameters");
+    
+    [self resetTimeoutTimer];
+    
     /**
     if (sdbConn)
         NSLog(@"Performing %@ Operation on %@ endpoint with version %@",[currentOperation_ class], currentOperation_.regionEndPoint, currentOperation_.version);
@@ -150,6 +160,9 @@ static NSString* secretKey;
 #pragma mark - Connection Delegate
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    
+    [self resetTimeoutTimer];
+    
     if (!responseData_)
         responseData_ = [NSMutableData data];
     [responseData_ setLength:0];
@@ -157,18 +170,40 @@ static NSString* secretKey;
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    
+    [self resetTimeoutTimer];
+    
     [responseData_ appendData:data];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     
+    [timeoutTimer invalidate];
+    timeoutTimer = nil;
+    
     // The operation object parses the xml
     [currentOperation_ parseResponseData:responseData_];
     //NSLog(@"%@",[[NSString alloc] initWithData:responseData_ encoding:NSUTF8StringEncoding]);
     
+    currentOperation_.failed = NO;
+    
     // The parsed data dictionary is sent to the block
     if (self.onReceivedData)
         self.onReceivedData([NSDictionary dictionaryWithDictionary:currentOperation_.responseDictionary], currentOperation_);
+}
+
+#pragma mark - Timeout Handler
+
+- (void)timeoutReached:(NSTimer*)timer {
+    
+    currentOperation_.failed = YES;
+    
+    if (self.onReceivedData) {
+        self.onReceivedData(nil, currentOperation_);
+        self.onReceivedData = nil; // nil the block so if for some reason we do get data after the timeout, nothing will happen
+    }
+    
+    timeoutTimer = nil;
 }
 
 @end

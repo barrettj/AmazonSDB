@@ -59,12 +59,15 @@
     NSString            *currentKey_;
     NSString            *accessKey_;
     NSString            *secretKey_;
+    BOOL                failed_;
 }
 
 @property (copy, nonatomic)     NSString            *regionEndPoint;
 @property (copy, nonatomic)     NSString            *version;
 @property (readonly, nonatomic) NSMutableDictionary *responseDictionary;
 @property (readonly, nonatomic) BOOL                hasNextToken;
+
+@property (assign, nonatomic)   BOOL                failed;
 
 @property (copy, nonatomic)     NSString            *accessKey;
 @property (copy, nonatomic)     NSString            *secretKey;
