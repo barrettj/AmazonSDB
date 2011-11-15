@@ -1,7 +1,7 @@
 
 #import "SDB.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, SDBDataDelegate> {
+@interface AppDelegate : UIResponder <UIApplicationDelegate> {
     NSMutableData *responseData;
 }
 

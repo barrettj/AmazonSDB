@@ -18,29 +18,25 @@
 #import "SDBBatchPut.h"
 #import "SDBBatchDelete.h"
 
-@protocol SDBDataDelegate
-
-- (void)didReceiveSDBData:(NSDictionary *)sdbData fromOperation:(SDBOperation *)operation;
-
-@end
+typedef void (^SDBReceiveDataBlock)(NSDictionary*, SDBOperation*);
 
 @interface SDB : NSObject <NSURLConnectionDataDelegate>
 
-@property (weak, nonatomic) id<SDBDataDelegate> dataDelegate;
+@property (readwrite, copy) SDBReceiveDataBlock onReceivedData;
 
-+ (void)selectWithExpression:(NSString *)expression dataDelegate:(id<SDBDataDelegate>)dataDelegate;
-+ (void)getItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate;
++ (void)selectWithExpression:(NSString *)expression block:(SDBReceiveDataBlock)block;
++ (void)getItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
 
-+ (void)putItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate;
-+ (void)putItems:(NSDictionary *)items domain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate;
++ (void)putItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
++ (void)putItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
 
-+ (void)deleteItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate;
-+ (void)deleteItems:(NSDictionary *)items domain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate;
++ (void)deleteItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
++ (void)deleteItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
 
-+ (void)listDomainsWithMaximum:(int)max dataDelegate:(id<SDBDataDelegate>)dataDelegate;
-+ (void)metadataForDomain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate;
++ (void)listDomainsWithMaximum:(int)max block:(SDBReceiveDataBlock)block;
++ (void)metadataForDomain:(NSString *)domain block:(SDBReceiveDataBlock)block;
 
-+ (void)createDomain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate;
-+ (void)deleteDomain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate;
++ (void)createDomain:(NSString *)domain block:(SDBReceiveDataBlock)block;
++ (void)deleteDomain:(NSString *)domain block:(SDBReceiveDataBlock)block;
 
 @end

@@ -11,7 +11,6 @@
 @interface SDB() {
     SDBOperation *currentOperation_;
     NSMutableData *responseData_;
-    id<SDBDataDelegate> dataDelegate_;
 }
 
 - (void)startRequest;
@@ -19,23 +18,17 @@
 @end
 
 @implementation SDB
+@synthesize onReceivedData;
 
-- (id)initWithOperation:(SDBOperation *)operation andDataDelegate:(id<SDBDataDelegate>)dataDelegate {
+- (id)initWithOperation:(SDBOperation *)operation andBlock:(SDBReceiveDataBlock)block {
     self = [super init];
     if (self) {
         currentOperation_ = operation;
-        dataDelegate_ = dataDelegate;
+        self.onReceivedData = block;
     }
     return self;
 }
 
-- (void)setDataDelegate:(id<SDBDataDelegate>)dataDelegate {
-    dataDelegate_ = dataDelegate;
-}
-
-- (id)dataDelegate {
-    return dataDelegate_;
-}
 
 - (void)startRequest {
     NSURL *sdbUrl = [NSURL URLWithString:currentOperation_.signedUrlString];
@@ -52,66 +45,66 @@
 
 #pragma mark - Operation Factory Methods
 
-+ (void)listDomainsWithMaximum:(int)max dataDelegate:(id<SDBDataDelegate>)dataDelegate {
++ (void)listDomainsWithMaximum:(int)max block:(SDBReceiveDataBlock)block {
     SDBOperation *operation = [[SDBListDomains alloc] initWithMaxNumberOfDomains:max nextToken:nil]; 
-    SDB *sdb = [[SDB alloc] initWithOperation:operation andDataDelegate:dataDelegate];
+    SDB *sdb = [[SDB alloc] initWithOperation:operation andBlock:block];
     [sdb startRequest];
 }
 
-+ (void)metadataForDomain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate {
++ (void)metadataForDomain:(NSString *)domain block:(SDBReceiveDataBlock)block {
     SDBOperation *operation = [[SDBDomainMetadata alloc] initWithDomainName:[NSString stringWithString:domain]];
-    SDB *sdb = [[SDB alloc] initWithOperation:operation andDataDelegate:dataDelegate];
+    SDB *sdb = [[SDB alloc] initWithOperation:operation andBlock:block];
     [sdb startRequest];
 }
 
-+ (void)createDomain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate {
++ (void)createDomain:(NSString *)domain block:(SDBReceiveDataBlock)block {
     SDBOperation *operation = [[SDBCreateDomain alloc] initWithDomainName:[NSString stringWithString:domain]];
-    SDB *sdb = [[SDB alloc] initWithOperation:operation andDataDelegate:dataDelegate];
+    SDB *sdb = [[SDB alloc] initWithOperation:operation andBlock:block];
     [sdb startRequest];
 }
 
-+ (void)deleteDomain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate {
++ (void)deleteDomain:(NSString *)domain block:(SDBReceiveDataBlock)block {
     SDBOperation *operation = [[SDBDeleteDomain alloc] initWithDomainName:[NSString stringWithString:domain]];
-    SDB *sdb = [[SDB alloc] initWithOperation:operation andDataDelegate:dataDelegate];
+    SDB *sdb = [[SDB alloc] initWithOperation:operation andBlock:block];
     [sdb startRequest];
 }
 
 
-+ (void)selectWithExpression:(NSString *)expression dataDelegate:(id<SDBDataDelegate>)dataDelegate {
++ (void)selectWithExpression:(NSString *)expression block:(SDBReceiveDataBlock)block {
     
     SDBOperation *operation = [[SDBSelect alloc] initWithExpression:[NSString stringWithString:expression] nextToken:nil]; 
-    SDB *sdb = [[SDB alloc] initWithOperation:operation andDataDelegate:dataDelegate];
+    SDB *sdb = [[SDB alloc] initWithOperation:operation andBlock:block];
     [sdb startRequest];
 }
 
-+ (void)putItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate {
++ (void)putItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block {
     
     SDBOperation *operation = [[SDBPut alloc] initWithItemName:item attributes:attributes domainName:domain];
-    SDB *sdb = [[SDB alloc] initWithOperation:operation andDataDelegate:dataDelegate];
+    SDB *sdb = [[SDB alloc] initWithOperation:operation andBlock:block];
     [sdb startRequest];
 }
 
-+ (void)putItems:(NSDictionary *)items domain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate {
++ (void)putItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceiveDataBlock)block {
     SDBOperation *operation = [[SDBBatchPut alloc] initWithItems:items domainName:domain];
-    SDB *sdb = [[SDB alloc] initWithOperation:operation andDataDelegate:dataDelegate];
+    SDB *sdb = [[SDB alloc] initWithOperation:operation andBlock:block];
     [sdb startRequest];
 }
 
-+ (void)getItem:(NSString *)item withAttributes:(NSArray *)attributes domain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate {
++ (void)getItem:(NSString *)item withAttributes:(NSArray *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block {
     SDBOperation *operation = [[SDBGet alloc] initWithItemName:item attributes:attributes domainName:domain];
-    SDB *sdb = [[SDB alloc] initWithOperation:operation andDataDelegate:dataDelegate];
+    SDB *sdb = [[SDB alloc] initWithOperation:operation andBlock:block];
     [sdb startRequest];
 }
 
-+ (void)deleteItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate {
++ (void)deleteItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block {
     SDBOperation *operation = [[SDBDelete alloc] initWithItemName:item attributes:attributes domainName:domain];
-    SDB *sdb = [[SDB alloc] initWithOperation:operation andDataDelegate:dataDelegate];
+    SDB *sdb = [[SDB alloc] initWithOperation:operation andBlock:block];
     [sdb startRequest];
 }
 
-+ (void)deleteItems:(NSDictionary *)items domain:(NSString *)domain dataDelegate:(id<SDBDataDelegate>)dataDelegate {
++ (void)deleteItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceiveDataBlock)block {
     SDBOperation *operation = [[SDBBatchDelete alloc] initWithItems:items domainName:domain];
-    SDB *sdb = [[SDB alloc] initWithOperation:operation andDataDelegate:dataDelegate];
+    SDB *sdb = [[SDB alloc] initWithOperation:operation andBlock:block];
     [sdb startRequest];
 }
 
@@ -135,8 +128,9 @@
     [currentOperation_ parseResponseData:responseData_];
     //NSLog(@"%@",[[NSString alloc] initWithData:responseData_ encoding:NSUTF8StringEncoding]);
     
-    // The parsed data dictionary is sent to the delegate
-    [self.dataDelegate didReceiveSDBData:[NSDictionary dictionaryWithDictionary:currentOperation_.responseDictionary] fromOperation:currentOperation_];
+    // The parsed data dictionary is sent to the block
+    if (self.onReceivedData)
+        self.onReceivedData([NSDictionary dictionaryWithDictionary:currentOperation_.responseDictionary], currentOperation_);
 }
 
 @end

@@ -31,44 +31,83 @@
     return [NSDictionary dictionaryWithDictionary:items];
 }
 
+- (void)doNext {
+    selectorIndex++;
+
+    if (selectorIndex <= selectors_.count) {
+        SEL nextOperation = [[selectors_ objectAtIndex:selectorIndex-1] pointerValue];
+        [self performSelector:nextOperation];
+    }
+}
+
 - (void)createNewDomain {
-    [SDB createDomain:@"Tester" dataDelegate:self];
+    [SDB createDomain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
+        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        [self doNext];
+    }];
 }
 
 - (void)deleteDomain {
-    [SDB deleteDomain:@"Tester" dataDelegate:self]; 
+    [SDB deleteDomain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
+        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        [self doNext];
+    }];
 }
 
 - (void)putItem1 {
-    [SDB putItem:@"Item1" withAttributes:[self exampleItem] domain:@"Tester" dataDelegate:self];
+    [SDB putItem:@"Item1" withAttributes:[self exampleItem] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
+        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        [self doNext];
+    }];
 }
 
 - (void)putItem2 {
-    [SDB putItem:@"Item2" withAttributes:[self exampleItem] domain:@"Tester" dataDelegate:self];
+    [SDB putItem:@"Item2" withAttributes:[self exampleItem] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
+        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        [self doNext];
+    }];
 }
 
 - (void)putItem3 {
-    [SDB putItem:@"Item3" withAttributes:[self exampleItem] domain:@"Tester" dataDelegate:self];
+    [SDB putItem:@"Item3" withAttributes:[self exampleItem] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
+        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        [self doNext];
+    }];
 }
 
 - (void)batchPutItems {
-    [SDB putItems:[self exampleItems] domain:@"Tester" dataDelegate:self];
+    [SDB putItems:[self exampleItems] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
+        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        [self doNext];
+    }];
 }
 
 - (void)listItems {
-    [SDB selectWithExpression:@"select * from Tester" dataDelegate:self];
+    [SDB selectWithExpression:@"select * from Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
+        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        [self doNext];
+    }];
 }
 
 - (void)getItem {
-    [SDB getItem:@"Item1" withAttributes:[NSArray arrayWithObjects:@"Attribute1", @"Attribute2", nil] domain:@"Tester" dataDelegate:self];
+    [SDB getItem:@"Item1" withAttributes:[NSArray arrayWithObjects:@"Attribute1", @"Attribute2", nil] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
+        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        [self doNext];
+    }];
 }
 
 - (void)deleteItem {
-    [SDB deleteItem:@"Item1" withAttributes:nil domain:@"Tester" dataDelegate:self];
+    [SDB deleteItem:@"Item1" withAttributes:nil domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
+        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        [self doNext];
+    }];
 }
 
 - (void)batchDeleteItems {
-    [SDB deleteItems:[self exampleItems] domain:@"Tester" dataDelegate:self];
+    [SDB deleteItems:[self exampleItems] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
+        NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        [self doNext];
+    }];
 }
 
 /**
@@ -100,12 +139,7 @@
 #pragma mark - SDB Delegate
 
 - (void)didReceiveSDBData:(NSDictionary *)sdbData fromOperation:(SDBOperation *)operation {
-    selectorIndex++;
-    NSLog(@"Got data from %@:\n%@",operation.class, sdbData);
-    if (selectorIndex <= selectors_.count) {
-        SEL nextOperation = [[selectors_ objectAtIndex:selectorIndex-1] pointerValue];
-        [self performSelector:nextOperation];
-    }
+
 }
 
 #pragma mark - App Delegate
