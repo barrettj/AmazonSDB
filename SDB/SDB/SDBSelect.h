@@ -14,4 +14,7 @@
 
 - (id)initWithExpression:(NSString *)expression readMultiValue:(BOOL)multiValue nextToken:(NSString *)next;
 
+@property (nonatomic, copy, readonly) NSString* selectExpression;
+@property (nonatomic, assign, readonly) BOOL isMultiValue;
+
 @end

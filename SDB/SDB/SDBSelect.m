@@ -9,6 +9,7 @@
 #import "SDBSelect.h"
 
 @implementation SDBSelect
+@synthesize selectExpression, isMultiValue;
 
 - (id)init {
     return [self initWithExpression:nil nextToken:nil];
@@ -26,6 +27,9 @@
         [parameters_ setValue:expression forKey:@"SelectExpression"];
         if (!multiValue) [parameters_ setValue:@"true" forKey:@"ConsistentRead"];
         if (next) [parameters_ setValue:next forKey:@"NextToken"];
+        
+        selectExpression = expression;
+        isMultiValue = multiValue;
     }
     return self;
 }

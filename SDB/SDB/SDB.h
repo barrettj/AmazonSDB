@@ -58,6 +58,6 @@ typedef void (^SDBReceiveDataBlock)(NSDictionary*, SDBOperation*);
 + (void)createDomain:(NSString *)domain block:(SDBReceiveDataBlock)block;
 + (void)deleteDomain:(NSString *)domain block:(SDBReceiveDataBlock)block;
 
-
++ (void)continueOperation:(SDBOperation*)operation block:(SDBReceiveDataBlock)block;
 
 @end

@@ -190,6 +190,33 @@ static NSString* secretKey;
     [sdb startRequest];
 }
 
++ (void)continueOperation:(SDBOperation*)operation block:(SDBReceiveDataBlock)block {
+    if (!operation.hasNextToken)
+        return;
+    
+    NSString *token = [operation.responseDictionary objectForKey:@"NextToken"];
+    
+    token = [token stringByReplacingOccurrencesOfString:@"\n" withString:@"%0A"];
+    token = [token stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"];
+    
+    SDBOperation *newOp;
+    
+    if ([operation isKindOfClass:[SDBSelect class]]) {
+        SDBSelect *oldOp = (SDBSelect*)operation;
+        
+        newOp = [[SDBSelect alloc] initWithExpression:oldOp.selectExpression readMultiValue:oldOp.isMultiValue nextToken:token]; 
+        newOp.accessKey = accessKey;
+        newOp.secretKey = secretKey;
+    }
+    else {
+        NSLog(@"Unknown Operation to Continue");
+        return;
+    }
+    
+    SDB *sdb = [[SDB alloc] initWithOperation:newOp andBlock:block];
+    [sdb startRequest];   
+}
+
 
 #pragma mark - Connection Delegate
 

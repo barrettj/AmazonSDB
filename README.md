@@ -9,6 +9,7 @@ Changes by BarrettJ
 * Times out after a pre-defined number of seconds
 * Can now put multi-value attributes [SDB putMultiItem...]
 * Can now get/select multi-value attributes - see the addional select and get with the readMultiValue:(BOOL) parameter
+* Now supports NextToken on select statements (see [SDB continueOperation:block:];)
 
 Supported Operations
 --------------------
@@ -36,9 +37,9 @@ Installation
 
 TODO
 -----
-* Paging/NextToken handling
-* Support multiple Item.Attribute values
-* Handle exceptions (No network, etc.) - currently done via timeout
+* Paging/NextToken handling - Check!
+* Support multiple Item.Attribute values - Check
+* Handle exceptions (No network, etc.) - Currently done via timeout (more or less Check!)
 * Provide better parsing of SDB error messages
 * Input validation
 * Build out full example application

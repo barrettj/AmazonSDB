@@ -196,6 +196,28 @@
     }];
 }
 
+- (void)selectTest {
+    // Continues until no more results (should be three items total at this point)
+    
+    __block SDBReceiveDataBlock handler = ^(NSDictionary *sdbData, SDBOperation* operation) {
+        if (operation.failed) {
+            NSLog(@"Failed Operation %@:\n%@", operation.class, sdbData);    
+        }
+        else {
+            NSLog(@"Result from Select Test (hasNextToken = %i): %@", operation.hasNextToken, sdbData);
+            
+            if (operation.hasNextToken) {
+                [SDB continueOperation:operation block:handler];
+            }
+            else {
+                [self doNext];
+            }
+        }
+    };
+    
+    [SDB selectWithExpression:@"select * from Tester limit 1" block:handler];
+}
+
 /**
  Example/Test for all SDBOperations
  */
@@ -222,7 +244,9 @@
                   [NSValue valueWithPointer:@selector(listItems)],
                   [NSValue valueWithPointer:@selector(putMulti)],
                   [NSValue valueWithPointer:@selector(putMulti)],  // note: putMulti is repeated
-                  [NSValue valueWithPointer:@selector(getMulti)], 
+                  [NSValue valueWithPointer:@selector(getMulti)],
+                  [NSValue valueWithPointer:@selector(selectTest)],
+
                   nil];
     
     [self startTest];
