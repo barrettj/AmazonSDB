@@ -5,8 +5,10 @@ This is a simple interface to the Amazon Web Services product called SimpleDB.  
 Changes by BarrettJ
 --------------------
 * Now responds via a block instead of a delegate.
-* Easier to support multiple logins (SDB setAccessKey:andSecretKey:)
+* Easier to support multiple logins [(]SDB setAccessKey:andSecretKey:]
 * Times out after a pre-defined number of seconds
+* Can now put multi-value attributes [SDB putMultiItem...]
+* Can now get/select multi-value attributes - see the addional select and get with the readMultiValue:(BOOL) parameter
 
 Supported Operations
 --------------------

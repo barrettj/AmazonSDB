@@ -20,12 +20,17 @@
 }
 
 - (id)initWithItemName:(NSString *)item attributes:(NSArray *)attributes domainName:(NSString *)domain {
+    self = [self initWithItemName:item attributes:attributes readMultiValue:NO domainName:domain];
+    return self;
+}
+
+- (id)initWithItemName:(NSString *)item attributes:(NSArray *)attributes readMultiValue:(BOOL)multiValue domainName:(NSString *)domain {
     self = [super init];
     if (self) {
         [parameters_ setValue:@"GetAttributes" forKey:@"Action"];
         [parameters_ setValue:item forKey:@"ItemName"];
         [parameters_ setValue:domain forKey:@"DomainName"];
-        if (CONSISTENT_READ) [parameters_ setValue:@"true" forKey:@"ConsistentRead"];
+        if (!multiValue) [parameters_ setValue:@"true" forKey:@"ConsistentRead"];
         if (attributes) [self addAttributes:attributes];
     }
     return self;
@@ -53,7 +58,22 @@
     
     // We found an attribute value that needs to be added to the dictionary for the current key
     else if ([elementName isEqualToString:@"Value"]) {
-        [currentItemDictionary_ setValue:[NSString stringWithString:currentElementString_] forKey:currentKey_];
+        id currentData = [currentItemDictionary_ objectForKey:currentKey_];
+        
+        if (currentData) {
+            // if there's already a value, then we're dealing with multi-valued attributes, so turn the result into an array
+            
+            if ([currentData isKindOfClass:[NSMutableArray class]]) {
+                [currentData addObject:[NSString stringWithString:currentElementString_]];
+            }
+            else {
+                NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:currentData, [NSString stringWithString:currentElementString_], nil];
+                [currentItemDictionary_ setValue:array forKey:currentKey_];
+            }
+        }
+        else {
+            [currentItemDictionary_ setValue:[NSString stringWithString:currentElementString_] forKey:currentKey_];
+        }
     }
     
     else if ([elementName isEqualToString:@"GetAttributesResult"]) {

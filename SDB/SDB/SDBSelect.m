@@ -15,15 +15,21 @@
 }
 
 - (id)initWithExpression:(NSString *)expression nextToken:(NSString *)next {
+    self = [self initWithExpression:expression readMultiValue:NO nextToken:next];
+    return self;
+}
+
+- (id)initWithExpression:(NSString *)expression readMultiValue:(BOOL)multiValue nextToken:(NSString *)next {
     self = [super init];
     if (self) {
         [parameters_ setValue:@"Select" forKey:@"Action"];
         [parameters_ setValue:expression forKey:@"SelectExpression"];
-        if (CONSISTENT_READ) [parameters_ setValue:@"true" forKey:@"ConsistentRead"];
+        if (!multiValue) [parameters_ setValue:@"true" forKey:@"ConsistentRead"];
         if (next) [parameters_ setValue:next forKey:@"NextToken"];
     }
     return self;
 }
+
 
 #pragma mark - NSXML Parsing delegate
 
@@ -48,7 +54,22 @@
     
     // We found an attribute value that needs to be added to the dictionary for the current key
     else if ([elementName isEqualToString:@"Value"]) {
-        [currentItemDictionary_ setValue:[NSString stringWithString:currentElementString_] forKey:currentKey_];
+        id currentData = [currentItemDictionary_ objectForKey:currentKey_];
+        
+        if (currentData) {
+            // if there's already a value, then we're dealing with multi-valued attributes, so turn the result into an array
+            
+            if ([currentData isKindOfClass:[NSMutableArray class]]) {
+                [currentData addObject:[NSString stringWithString:currentElementString_]];
+            }
+            else {
+                NSMutableArray *array = [[NSMutableArray alloc] initWithObjects:currentData, [NSString stringWithString:currentElementString_], nil];
+                [currentItemDictionary_ setValue:array forKey:currentKey_];
+            }
+        }
+        else {
+            [currentItemDictionary_ setValue:[NSString stringWithString:currentElementString_] forKey:currentKey_];
+        }
     }
     
     // We are done with the item and its attribute dict should be added to the response dictionary

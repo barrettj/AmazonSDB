@@ -12,4 +12,6 @@
 
 - (id)initWithExpression:(NSString *)expression nextToken:(NSString *)next;
 
+- (id)initWithExpression:(NSString *)expression readMultiValue:(BOOL)multiValue nextToken:(NSString *)next;
+
 @end

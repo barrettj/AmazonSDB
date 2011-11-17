@@ -10,7 +10,7 @@
 
 @interface SDBPut() {
 }
-- (void)addAttributes:(NSDictionary *)attributes;
+- (void)addAttributes:(NSDictionary *)attributes multiValue:(NSArray*)multiValue;
 @end
 
 @implementation SDBPut
@@ -25,20 +25,35 @@
         [parameters_ setValue:@"PutAttributes" forKey:@"Action"];
         [parameters_ setValue:item forKey:@"ItemName"];
         [parameters_ setValue:domain forKey:@"DomainName"];
-        [self addAttributes:attributes];
+        [self addAttributes:attributes multiValue:nil];
     }
     return self;
 }
 
-- (void)addAttributes:(NSDictionary *)attributes {
+- (id)initWithItemName:(NSString *)item attributes:(NSDictionary *)attributes multiValue:(NSArray*)multiValue domainName:(NSString *)domain {
+    self = [super init];
+    if (self) {
+        [parameters_ setValue:@"PutAttributes" forKey:@"Action"];
+        [parameters_ setValue:item forKey:@"ItemName"];
+        [parameters_ setValue:domain forKey:@"DomainName"];
+        [self addAttributes:attributes multiValue:multiValue];
+    }
+    return self;
+}
 
+- (void)addAttributes:(NSDictionary *)attributes multiValue:(NSArray*)multiValue {
     [attributes.allKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {
         NSString *value = [attributes valueForKey:key];
         [parameters_ setValue:key forKey:[NSString stringWithFormat:@"Attribute.%d.Name",idx]];
         [parameters_ setValue:value forKey:[NSString stringWithFormat:@"Attribute.%d.Value",idx]];
-        [parameters_ setValue:@"true" forKey:[NSString stringWithFormat:@"Attribute.%d.Replace",idx]];
+        
+        if (multiValue && [multiValue containsObject:key])
+            [parameters_ setValue:@"false" forKey:[NSString stringWithFormat:@"Attribute.%d.Replace",idx]];
+        else
+            [parameters_ setValue:@"true" forKey:[NSString stringWithFormat:@"Attribute.%d.Replace",idx]];
     }];
 }
+
 
 
 @end

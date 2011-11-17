@@ -1,4 +1,4 @@
-#define RESET_DOMAIN_EACH_TIME YES
+#define RESET_DOMAIN_EACH_TIME NO
 
 #import "AppDelegate.h"
 
@@ -130,18 +130,15 @@
 }
 
 - (void)getMulti {
-    [self doNext];
-    
-    // Not done yet
-    
-//    [SDB getMultiItem:@"MultiItem" withAttributes:[NSArray arrayWithObjects:nil] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
-//        if (operation.failed)
-//            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
-//        else
-//            NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
-//        
-//        [self doNext];
-//    }];
+    [SDB getItem:@"MultiItem" withAttributes:[NSArray arrayWithObjects:nil] readMultiValue:YES domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
+        
+        if (operation.failed)
+            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+        else
+            NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
+        
+        [self doNext];
+    }];
 }
 
 - (void)batchPutItems {

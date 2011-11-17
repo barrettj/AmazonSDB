@@ -12,4 +12,7 @@
 
 - (id)initWithItemName:(NSString *)item attributes:(NSDictionary *)attributes domainName:(NSString *)domain;
 
+- (id)initWithItemName:(NSString *)item attributes:(NSDictionary *)attributes multiValue:(NSArray*)multiValue domainName:(NSString *)domain;
+
+
 @end

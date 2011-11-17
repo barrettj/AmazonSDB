@@ -33,9 +33,17 @@ typedef void (^SDBReceiveDataBlock)(NSDictionary*, SDBOperation*);
 + (BOOL)accessKeysSet;
 
 + (void)selectWithExpression:(NSString *)expression block:(SDBReceiveDataBlock)block;
++ (void)selectWithExpression:(NSString *)expression readMultiValue:(BOOL)multiValue block:(SDBReceiveDataBlock)block;
+
+
 + (void)getItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
++ (void)getItem:(NSString *)item withAttributes:(NSDictionary *)attributes readMultiValue:(BOOL)multiValue domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
+
 
 + (void)putItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
++ (void)putItem:(NSString *)item withAttributes:(NSDictionary *)attributes multiValue:(NSArray*)multiValue domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
+
+
 + (void)putItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
 
 + (void)putMultiItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
