@@ -13,6 +13,7 @@
 #import "SDBDeleteDomain.h"
 #import "SDBSelect.h"
 #import "SDBPut.h"
+#import "SDBPutMulti.h"
 #import "SDBGet.h"
 #import "SDBDelete.h"
 #import "SDBBatchPut.h"
@@ -36,6 +37,9 @@ typedef void (^SDBReceiveDataBlock)(NSDictionary*, SDBOperation*);
 
 + (void)putItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
 + (void)putItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
+
++ (void)putMultiItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
+
 
 + (void)deleteItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block;
 + (void)deleteItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceiveDataBlock)block;

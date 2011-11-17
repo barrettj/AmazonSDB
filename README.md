@@ -6,12 +6,13 @@ Changes by BarrettJ
 --------------------
 * Now responds via a block instead of a delegate.
 * Easier to support multiple logins (SDB setAccessKey:andSecretKey:)
+* Times out after a pre-defined number of seconds
 
 Supported Operations
 --------------------
 A full list of SDB Operations (queries) can be found here:
-http://docs.amazonwebservices.com/AmazonSimpleDB/latest/DeveloperGuideindex.html?SDB_API_Operations.html
-Currently, the following of these are implemented: (Covers the full domain as of 8/14/2012)
+http://docs.amazonwebservices.com/AmazonSimpleDB/latest/DeveloperGuide/index.html?SDB_API.html
+Currently, the following of these are implemented: (Covers the full domain as of 11/17/2011)
 
 * ListDomains
 * DomainMetadata
@@ -35,7 +36,7 @@ TODO
 -----
 * Paging/NextToken handling
 * Support multiple Item.Attribute values
-* Handle exceptions (No network, etc.)
+* Handle exceptions (No network, etc.) - currently done via timeout
 * Provide better parsing of SDB error messages
 * Input validation
 * Build out full example application
