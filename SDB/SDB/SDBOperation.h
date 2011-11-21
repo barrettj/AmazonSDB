@@ -5,7 +5,7 @@
 
  The SDBOperation class is an abstract superclass for the various SDB Operations.
  Currently available operations: 
- http://docs.amazonwebservices.com/AmazonSimpleDB/latest/DeveloperGuideindex.html?SDB_API_Operations.html
+ http://docs.amazonwebservices.com/AmazonSimpleDB/latest/DeveloperGuide/index.html?SDB_API_Operations.html
  Each SDBAction is responsible for two things:
  
  - Creating a signed url string to perform the operation
@@ -23,7 +23,7 @@
 /**
  Currently available region endpoints
  More info at: 
- http://docs.amazonwebservices.com/AmazonSimpleDB/latest/DeveloperGuideindex.html?Endpoints.html
+ http://docs.amazonwebservices.com/AmazonSimpleDB/latest/DeveloperGuide/index.html?Endpoints.html
  */
 #define kSDBRegionEndpointDefault @"sdb.amazonaws.com"
 #define kSDBRegionEndpointUSEast @"sdb.amazonaws.com"
@@ -35,7 +35,7 @@
 /**
  AWS API Version
  More info at: 
- http://docs.amazonwebservices.com/AmazonSimpleDB/latest/DeveloperGuideindex.html?SDB_API_WSDL.html
+ http://docs.amazonwebservices.com/AmazonSimpleDB/latest/DeveloperGuide/index.html?SDB_API_WSDL.html
  */
 #define kSDBVersion @"2009-04-15"
 
@@ -47,6 +47,7 @@
     NSString            *currentElementName_;
     NSMutableString     *currentElementString_;
     BOOL                inAttribute_;
+    BOOL                inError_;
     BOOL                hasNextToken_;
     NSString            *currentItemName_;
     NSString            *currentKey_;
@@ -69,5 +70,7 @@
 - (void)addToken:(NSString *)token;
 - (NSString *)signedUrlString;
 - (void)parseResponseData:(NSData *)data;
+
+- (NSString*)urlEncodeValue:(NSString*)string;
 
 @end

@@ -54,7 +54,7 @@
     parser.shouldResolveExternalEntities = NO;
     [parser parse];
     
-    //NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
     
     NSError *parseError = [parser parserError];
     if (parseError) NSLog(@"%@",[parseError localizedDescription]);
@@ -73,6 +73,7 @@ didStartElement:(NSString *)elementName
     // Set the flag if we are in an attribute (to avoid name collision with item's name tag)
     if ([elementName isEqualToString:@"Attribute"]) inAttribute_ = YES;
     
+    if ([elementName isEqualToString:@"Error"]) inError_ = YES;
 }
 
 - (void)parser:(NSXMLParser *)parser 
@@ -82,10 +83,26 @@ didStartElement:(NSString *)elementName
     
     // Update the flag to indicate we are no longer in an attribute (name tags are now for the item)
     if ([elementName isEqualToString:@"Attribute"]) inAttribute_ = NO;
+
+    if ([elementName isEqualToString:@"Error"]) {
+        inError_ = NO;
+        
+        failed_ = YES;
+        
+        //NSLog(@"SDB Error: %@", currentElementString_);
+
+        NSMutableArray *errors = [responseDictionary_ objectForKey:@"Errors"];
+        if (!errors) {
+            errors = [[NSMutableArray alloc] init];
+            [responseDictionary_ setObject:errors forKey:@"Errors"];
+        }
+        
+        [errors addObject:currentElementString_];
+    }
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string {
-    
+   
     // Add the characters to the current string
     [currentElementString_ appendString:string];
     
@@ -101,6 +118,8 @@ didStartElement:(NSString *)elementName
     
     // Reset the hasNextToken flag
     hasNextToken_ = NO;
+    
+    inError_ = NO;
 }
 
 #pragma mark - Signature composition
@@ -122,7 +141,11 @@ didStartElement:(NSString *)elementName
     NSArray *keys = [[parameters_ allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     [keys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop){
         NSString *val = [parameters_ valueForKey:key];
-        [canonicalString appendFormat:@"&%@=%@",key,[self escapedSelectWithString:val]]; 
+        
+        if ([key rangeOfString:@".Value"].location != NSNotFound)
+            [canonicalString appendFormat:@"&%@=%@",key,val]; // values are already encoded
+        else
+            [canonicalString appendFormat:@"&%@=%@",key,[self escapedSelectWithString:val]]; 
     }];
     return [NSString stringWithString:canonicalString];
 }
@@ -156,7 +179,11 @@ didStartElement:(NSString *)elementName
     [url appendFormat:@"https://%@?", self.regionEndPoint];
     [url appendFormat:@"AWSAccessKeyId=%@",self.accessKey];
     [parameters_ enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSString *val, BOOL *stop) {
-        [url appendFormat:@"&%@=%@",key,[self escapedSelectWithString:val]];
+
+        if ([key rangeOfString:@".Value"].location != NSNotFound)
+            [url appendFormat:@"&%@=%@",key,val]; // values are already encoded
+        else
+            [url appendFormat:@"&%@=%@",key,[self escapedSelectWithString:val]]; 
     }];
     //NSLog(@"%@",url);
     return [NSString stringWithString:url];
@@ -237,6 +264,16 @@ didStartElement:(NSString *)elementName
 	
 	return encodedString;
     
+}
+
+- (NSString*)urlEncodeValue:(NSString*)string {
+    CFStringRef urlString = CFURLCreateStringByAddingPercentEscapes(
+                                                                    NULL,
+                                                                    (__bridge CFStringRef)string,
+                                                                    NULL,
+                                                                    (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ",
+                                                                    kCFStringEncodingUTF8 );
+    return (__bridge_transfer NSString *)urlString;
 }
 
 - (NSString *)escapedSignatureWithString:(NSString *)string {

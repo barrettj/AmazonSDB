@@ -246,8 +246,6 @@ static NSString* secretKey;
     [currentOperation_ parseResponseData:responseData_];
     //NSLog(@"%@",[[NSString alloc] initWithData:responseData_ encoding:NSUTF8StringEncoding]);
     
-    currentOperation_.failed = NO;
-    
     // The parsed data dictionary is sent to the block
     if (self.onReceivedData)
         self.onReceivedData([NSDictionary dictionaryWithDictionary:currentOperation_.responseDictionary], currentOperation_);

@@ -43,7 +43,10 @@
 
 - (void)addAttributes:(NSDictionary *)attributes multiValue:(NSArray*)multiValue {
     [attributes.allKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {
-        NSString *value = [attributes valueForKey:key];
+        NSString *value = [self urlEncodeValue:[attributes valueForKey:key]];
+        
+        NSLog(@"encoded value: %@", value);
+        
         [parameters_ setValue:key forKey:[NSString stringWithFormat:@"Attribute.%d.Name",idx]];
         [parameters_ setValue:value forKey:[NSString stringWithFormat:@"Attribute.%d.Value",idx]];
         

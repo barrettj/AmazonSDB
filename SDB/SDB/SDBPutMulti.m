@@ -33,7 +33,7 @@
 - (void)addAttributes:(NSDictionary *)attributes {
 
     [attributes.allKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {
-        NSString *value = [attributes valueForKey:key];
+        NSString *value = [self urlEncodeValue:[attributes valueForKey:key]];
         [parameters_ setValue:key forKey:[NSString stringWithFormat:@"Attribute.%d.Name",idx]];
         [parameters_ setValue:value forKey:[NSString stringWithFormat:@"Attribute.%d.Value",idx]];
         [parameters_ setValue:@"false" forKey:[NSString stringWithFormat:@"Attribute.%d.Replace",idx]];

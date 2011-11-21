@@ -43,7 +43,7 @@
     NSMutableDictionary *attributes = [NSMutableDictionary dictionary];
     [attributes setValue:@"1" forKey:@"Attribute1"];
     [attributes setValue:@"2" forKey:@"Attribute2"];
-    [attributes setValue:@"three" forKey:@"Attribute3"];
+    [attributes setValue:@"three'" forKey:@"Attribute3"];
     return [NSDictionary dictionaryWithDictionary:attributes];
 }
 
@@ -66,7 +66,7 @@
 - (void)createNewDomain {
     [SDB createDomain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
         if (operation.failed)
-            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+            NSLog(@"Operation Failed %@:\n%@", operation.class, sdbData);    
         else
             NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
         
@@ -77,7 +77,7 @@
 - (void)deleteDomain {
     [SDB deleteDomain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
         if (operation.failed)
-            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+            NSLog(@"Operation Failed %@:\n%@", operation.class, sdbData);    
         else
             NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
         
@@ -88,7 +88,7 @@
 - (void)putItem1 {
     [SDB putItem:@"Item1" withAttributes:[self exampleItem] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
         if (operation.failed)
-            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+            NSLog(@"Operation Failed %@:\n%@", operation.class, sdbData);    
         else
             NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
         
@@ -99,7 +99,7 @@
 - (void)putItem2 {
     [SDB putItem:@"Item2" withAttributes:[self exampleItem] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
         if (operation.failed)
-            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+            NSLog(@"Operation Failed %@:\n%@", operation.class, sdbData);    
         else
             NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
         
@@ -110,7 +110,7 @@
 - (void)putItem3 {
     [SDB putItem:@"Item3" withAttributes:[self exampleItem] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
         if (operation.failed)
-            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+            NSLog(@"Operation Failed %@:\n%@", operation.class, sdbData);    
         else
             NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
         
@@ -121,7 +121,7 @@
 - (void)putMulti {
     [SDB putMultiItem:@"MultiItem" withAttributes:[self multiData] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
         if (operation.failed)
-            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+            NSLog(@"Operation Failed %@:\n%@", operation.class, sdbData);    
         else
             NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
         
@@ -133,7 +133,7 @@
     [SDB getItem:@"MultiItem" withAttributes:[NSArray arrayWithObjects:nil] readMultiValue:YES domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
         
         if (operation.failed)
-            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+            NSLog(@"Operation Failed %@:\n%@", operation.class, sdbData);    
         else
             NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
         
@@ -144,7 +144,7 @@
 - (void)batchPutItems {
     [SDB putItems:[self exampleItems] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
         if (operation.failed)
-            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+            NSLog(@"Operation Failed %@:\n%@", operation.class, sdbData);    
         else
             NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
         
@@ -155,7 +155,7 @@
 - (void)listItems {
     [SDB selectWithExpression:@"select * from Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
         if (operation.failed)
-            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+            NSLog(@"Operation Failed %@:\n%@", operation.class, sdbData);    
         else
             NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
         
@@ -166,7 +166,7 @@
 - (void)getItem {
     [SDB getItem:@"Item1" withAttributes:[NSArray arrayWithObjects:@"Attribute1", @"Attribute2", nil] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
         if (operation.failed)
-            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+            NSLog(@"Operation Failed %@:\n%@", operation.class, sdbData);    
         else
             NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
         
@@ -177,7 +177,7 @@
 - (void)deleteItem {
     [SDB deleteItem:@"Item1" withAttributes:nil domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
         if (operation.failed)
-            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+            NSLog(@"Operation Failed %@:\n%@", operation.class, sdbData);    
         else
             NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
         
@@ -188,7 +188,7 @@
 - (void)batchDeleteItems {
     [SDB deleteItems:[self exampleItems] domain:@"Tester" block:^(NSDictionary *sdbData, SDBOperation* operation) {
         if (operation.failed)
-            NSLog(@"Operation %@:\n%@", operation.class, sdbData);    
+            NSLog(@"Operation Failed %@:\n%@", operation.class, sdbData);    
         else
             NSLog(@"Got data from %@:\n%@", operation.class, sdbData);
         
@@ -201,7 +201,7 @@
     
     __block SDBReceiveDataBlock handler = ^(NSDictionary *sdbData, SDBOperation* operation) {
         if (operation.failed) {
-            NSLog(@"Failed Operation %@:\n%@", operation.class, sdbData);    
+            NSLog(@"Operation Failed %@:\n%@", operation.class, sdbData);    
         }
         else {
             NSLog(@"Result from Select Test (hasNextToken = %i): %@", operation.hasNextToken, sdbData);

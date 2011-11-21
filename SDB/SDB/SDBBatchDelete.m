@@ -40,7 +40,7 @@
         attributes = [items valueForKey:item];
         [attributes.allKeys enumerateObjectsUsingBlock:^(NSString *attribute, NSUInteger idy, BOOL *stop) {
             
-            NSString *value = [attributes valueForKey:attribute];
+            NSString *value = [self urlEncodeValue:[attributes valueForKey:attribute]];
             [parameters_ setValue:attribute forKey:[NSString stringWithFormat:@"Attribute.%d.Name",idy]];
             [parameters_ setValue:value forKey:[NSString stringWithFormat:@"Attribute.%d.Value",idy]];
             
