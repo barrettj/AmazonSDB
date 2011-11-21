@@ -54,7 +54,7 @@
     parser.shouldResolveExternalEntities = NO;
     [parser parse];
     
-    NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+    //NSLog(@"%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
     
     NSError *parseError = [parser parserError];
     if (parseError) NSLog(@"%@",[parseError localizedDescription]);
