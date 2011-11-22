@@ -36,7 +36,7 @@
     [attributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if ([obj isKindOfClass:[NSArray class]]) {
             [obj enumerateObjectsUsingBlock:^(id multiValueObj, NSUInteger idz, BOOL *stop) {
-                NSString *stringValue = [self urlEncodeValue:multiValueObj];
+                NSString *stringValue = [self getObjectValueToSaveToSDB:multiValueObj];
                 
                 [parameters_ setValue:key forKey:[NSString stringWithFormat:@"Attribute.%d.Name",idx]];
                 [parameters_ setValue:stringValue forKey:[NSString stringWithFormat:@"Attribute.%d.Value",idx]];
@@ -46,7 +46,7 @@
             }];
         }
         else {
-            NSString *stringValue = [self urlEncodeValue:obj];
+            NSString *stringValue = [self getObjectValueToSaveToSDB:obj];
             
             [parameters_ setValue:key forKey:[NSString stringWithFormat:@"Attribute.%d.Name",idx]];
             [parameters_ setValue:stringValue forKey:[NSString stringWithFormat:@"Attribute.%d.Value",idx]];

@@ -88,6 +88,7 @@
     [items setValue:[self exampleItem] forKey:@"Item4"];
     [items setValue:[self exampleItem] forKey:@"Item5"];
     [items setValue:[self exampleItem] forKey:@"Item6"];
+    [items setValue:[self multiData] forKey:@"MultiItemInBatch"];
     return [NSDictionary dictionaryWithDictionary:items];
 }
 

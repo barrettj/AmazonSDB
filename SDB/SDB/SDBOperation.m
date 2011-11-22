@@ -276,6 +276,18 @@ didStartElement:(NSString *)elementName
     return (__bridge_transfer NSString *)urlString;
 }
 
+- (NSString*)getObjectValueToSaveToSDB:(id)obj {
+    if ([obj isKindOfClass:[NSString class]]) {
+        return [self urlEncodeValue:obj];
+    }
+    
+    // could support automatic boxing here...not sure if I want to...
+    
+    NSLog(@"Trying to save value other than string to SDB!");
+    
+    return @"";
+}
+
 - (NSString *)escapedSignatureWithString:(NSString *)string {
     NSString *escapedPluses = [string stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
     NSString *escapedEquals = [escapedPluses stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"];

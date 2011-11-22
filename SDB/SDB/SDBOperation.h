@@ -71,6 +71,6 @@
 - (NSString *)signedUrlString;
 - (void)parseResponseData:(NSData *)data;
 
-- (NSString*)urlEncodeValue:(NSString*)string;
+- (NSString*)getObjectValueToSaveToSDB:(id)obj;
 
 @end
