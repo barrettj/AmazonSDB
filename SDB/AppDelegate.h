@@ -11,6 +11,8 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate> {
     NSMutableData *responseData;
+    
+    SDBReceivedDataBlock defaultHandler;
 }
 
 @property (strong, nonatomic) UIWindow *window;

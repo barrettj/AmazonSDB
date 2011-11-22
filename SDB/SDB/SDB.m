@@ -20,7 +20,7 @@
 @implementation SDB
 @synthesize onReceivedData;
 
-- (id)initWithOperation:(SDBOperation *)operation andBlock:(SDBReceiveDataBlock)block {
+- (id)initWithOperation:(SDBOperation *)operation andBlock:(SDBReceivedDataBlock)block {
     self = [super init];
     if (self) {
         currentOperation_ = operation;
@@ -75,7 +75,7 @@ static NSString* secretKey;
 
 #pragma mark - Operation Factory Methods
 
-+ (void)listDomainsWithMaximum:(int)max block:(SDBReceiveDataBlock)block {
++ (void)listDomainsWithMaximum:(int)max block:(SDBReceivedDataBlock)block {
     SDBOperation *operation = [[SDBListDomains alloc] initWithMaxNumberOfDomains:max nextToken:nil];
     operation.accessKey = accessKey;
     operation.secretKey = secretKey;
@@ -83,7 +83,7 @@ static NSString* secretKey;
     [sdb startRequest];
 }
 
-+ (void)metadataForDomain:(NSString *)domain block:(SDBReceiveDataBlock)block {
++ (void)metadataForDomain:(NSString *)domain block:(SDBReceivedDataBlock)block {
     SDBOperation *operation = [[SDBDomainMetadata alloc] initWithDomainName:[NSString stringWithString:domain]];
     operation.accessKey = accessKey;
     operation.secretKey = secretKey;
@@ -91,7 +91,7 @@ static NSString* secretKey;
     [sdb startRequest];
 }
 
-+ (void)createDomain:(NSString *)domain block:(SDBReceiveDataBlock)block {
++ (void)createDomain:(NSString *)domain block:(SDBReceivedDataBlock)block {
     SDBOperation *operation = [[SDBCreateDomain alloc] initWithDomainName:[NSString stringWithString:domain]];
     operation.accessKey = accessKey;
     operation.secretKey = secretKey;
@@ -99,7 +99,7 @@ static NSString* secretKey;
     [sdb startRequest];
 }
 
-+ (void)deleteDomain:(NSString *)domain block:(SDBReceiveDataBlock)block {
++ (void)deleteDomain:(NSString *)domain block:(SDBReceivedDataBlock)block {
     SDBOperation *operation = [[SDBDeleteDomain alloc] initWithDomainName:[NSString stringWithString:domain]];
     operation.accessKey = accessKey;
     operation.secretKey = secretKey;
@@ -108,7 +108,7 @@ static NSString* secretKey;
 }
 
 
-+ (void)selectWithExpression:(NSString *)expression block:(SDBReceiveDataBlock)block {
++ (void)selectWithExpression:(NSString *)expression block:(SDBReceivedDataBlock)block {
     SDBOperation *operation = [[SDBSelect alloc] initWithExpression:[NSString stringWithString:expression] nextToken:nil]; 
     operation.accessKey = accessKey;
     operation.secretKey = secretKey;
@@ -116,7 +116,7 @@ static NSString* secretKey;
     [sdb startRequest];
 }
 
-+ (void)selectWithExpression:(NSString *)expression readMultiValue:(BOOL)multiValue block:(SDBReceiveDataBlock)block {
++ (void)selectWithExpression:(NSString *)expression readMultiValue:(BOOL)multiValue block:(SDBReceivedDataBlock)block {
     SDBOperation *operation = [[SDBSelect alloc] initWithExpression:[NSString stringWithString:expression] readMultiValue:multiValue nextToken:nil]; 
     operation.accessKey = accessKey;
     operation.secretKey = secretKey;
@@ -124,7 +124,7 @@ static NSString* secretKey;
     [sdb startRequest];
 }
 
-+ (void)putItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block {
++ (void)putItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceivedDataBlock)block {
     SDBOperation *operation = [[SDBPut alloc] initWithItemName:item attributes:attributes domainName:domain];
     operation.accessKey = accessKey;
     operation.secretKey = secretKey;
@@ -132,16 +132,7 @@ static NSString* secretKey;
     [sdb startRequest];
 }
 
-+ (void)putItem:(NSString *)item withAttributes:(NSDictionary *)attributes multiValue:(NSArray*)multiValue domain:(NSString *)domain block:(SDBReceiveDataBlock)block {
-    SDBOperation *operation = [[SDBPut alloc] initWithItemName:item attributes:attributes multiValue:multiValue domainName:domain];
-    operation.accessKey = accessKey;
-    operation.secretKey = secretKey;
-    SDB *sdb = [[SDB alloc] initWithOperation:operation andBlock:block];
-    [sdb startRequest];
-}
-
-
-+ (void)putItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceiveDataBlock)block {
++ (void)putItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceivedDataBlock)block {
     SDBOperation *operation = [[SDBBatchPut alloc] initWithItems:items domainName:domain];
     operation.accessKey = accessKey;
     operation.secretKey = secretKey;
@@ -149,15 +140,8 @@ static NSString* secretKey;
     [sdb startRequest];
 }
 
-+ (void)putMultiItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block {
-    SDBOperation *operation = [[SDBPutMulti alloc] initWithItemName:item attributes:attributes domainName:domain];
-    operation.accessKey = accessKey;
-    operation.secretKey = secretKey;
-    SDB *sdb = [[SDB alloc] initWithOperation:operation andBlock:block];
-    [sdb startRequest];
-}
 
-+ (void)getItem:(NSString *)item withAttributes:(NSArray *)attributes readMultiValue:(BOOL)multiValue  domain:(NSString *)domain block:(SDBReceiveDataBlock)block {
++ (void)getItem:(NSString *)item withAttributes:(NSArray *)attributes readMultiValue:(BOOL)multiValue  domain:(NSString *)domain block:(SDBReceivedDataBlock)block {
     SDBOperation *operation = [[SDBGet alloc] initWithItemName:item attributes:attributes readMultiValue:multiValue domainName:domain];
     operation.accessKey = accessKey;
     operation.secretKey = secretKey;
@@ -165,7 +149,7 @@ static NSString* secretKey;
     [sdb startRequest];
 }
 
-+ (void)getItem:(NSString *)item withAttributes:(NSArray *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block {
++ (void)getItem:(NSString *)item withAttributes:(NSArray *)attributes domain:(NSString *)domain block:(SDBReceivedDataBlock)block {
     SDBOperation *operation = [[SDBGet alloc] initWithItemName:item attributes:attributes domainName:domain];
     operation.accessKey = accessKey;
     operation.secretKey = secretKey;
@@ -174,7 +158,7 @@ static NSString* secretKey;
 }
 
 
-+ (void)deleteItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceiveDataBlock)block {
++ (void)deleteItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceivedDataBlock)block {
     SDBOperation *operation = [[SDBDelete alloc] initWithItemName:item attributes:attributes domainName:domain];
     operation.accessKey = accessKey;
     operation.secretKey = secretKey;
@@ -182,7 +166,7 @@ static NSString* secretKey;
     [sdb startRequest];
 }
 
-+ (void)deleteItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceiveDataBlock)block {
++ (void)deleteItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceivedDataBlock)block {
     SDBOperation *operation = [[SDBBatchDelete alloc] initWithItems:items domainName:domain];
     operation.accessKey = accessKey;
     operation.secretKey = secretKey;
@@ -190,7 +174,7 @@ static NSString* secretKey;
     [sdb startRequest];
 }
 
-+ (void)continueOperation:(SDBOperation*)operation block:(SDBReceiveDataBlock)block {
++ (void)continueOperation:(SDBOperation*)operation block:(SDBReceivedDataBlock)block {
     if (!operation.hasNextToken)
         return;
     

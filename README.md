@@ -7,7 +7,7 @@ Changes by BarrettJ
 * Now responds via a block instead of a delegate.
 * Easier to support multiple logins [(]SDB setAccessKey:andSecretKey:]
 * Times out after a pre-defined number of seconds
-* Can now put multi-value attributes [SDB putMultiItem...]
+* Can now put multi-value attributes (wrap the value in an NSArray)
 * Can now get/select multi-value attributes - see the addional select and get with the readMultiValue:(BOOL) parameter
 * Now supports NextToken on select statements (see [SDB continueOperation:block:];)
 * Attribute Values are now automatically URL Encoded

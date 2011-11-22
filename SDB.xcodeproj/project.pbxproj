@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6F1F5C531475559F00A2D28E /* SDBPutMulti.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1F5C521475559F00A2D28E /* SDBPutMulti.m */; };
+		6F1DFE09147BE98B000FDAB4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6F1DFE08147BE98B000FDAB4 /* README.md */; };
 		CA0FD8FE13F23DB90050B813 /* SDBPut.m in Sources */ = {isa = PBXBuildFile; fileRef = CA0FD8FD13F23DB90050B813 /* SDBPut.m */; };
 		CA3D788F13F6F04800B03036 /* SDBDeleteDomain.m in Sources */ = {isa = PBXBuildFile; fileRef = CA3D788E13F6F04800B03036 /* SDBDeleteDomain.m */; };
 		CA3D789313F6F2F300B03036 /* SDBCreateDomain.m in Sources */ = {isa = PBXBuildFile; fileRef = CA3D789213F6F2F300B03036 /* SDBCreateDomain.m */; };
@@ -29,8 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6F1F5C511475559F00A2D28E /* SDBPutMulti.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDBPutMulti.h; path = SDB/SDBPutMulti.h; sourceTree = "<group>"; };
-		6F1F5C521475559F00A2D28E /* SDBPutMulti.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDBPutMulti.m; path = SDB/SDBPutMulti.m; sourceTree = "<group>"; };
+		6F1DFE08147BE98B000FDAB4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 		CA0FD8FC13F23DB90050B813 /* SDBPut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDBPut.h; path = SDB/SDBPut.h; sourceTree = "<group>"; };
 		CA0FD8FD13F23DB90050B813 /* SDBPut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDBPut.m; path = SDB/SDBPut.m; sourceTree = "<group>"; };
 		CA3D788D13F6F04800B03036 /* SDBDeleteDomain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDBDeleteDomain.h; path = SDB/SDBDeleteDomain.h; sourceTree = "<group>"; };
@@ -122,6 +121,7 @@
 		CA763F9213E4C36400158CB2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				6F1DFE08147BE98B000FDAB4 /* README.md */,
 				CA763F9313E4C36400158CB2 /* SDB-Info.plist */,
 				CA763F9413E4C36400158CB2 /* InfoPlist.strings */,
 				CA763F9713E4C36400158CB2 /* main.m */,
@@ -145,8 +145,6 @@
 				CAB15D4D13E5CA890077F5FB /* SDBSelect.m */,
 				CA0FD8FC13F23DB90050B813 /* SDBPut.h */,
 				CA0FD8FD13F23DB90050B813 /* SDBPut.m */,
-				6F1F5C511475559F00A2D28E /* SDBPutMulti.h */,
-				6F1F5C521475559F00A2D28E /* SDBPutMulti.m */,
 				CA3D788D13F6F04800B03036 /* SDBDeleteDomain.h */,
 				CA3D788E13F6F04800B03036 /* SDBDeleteDomain.m */,
 				CA3D789113F6F2F200B03036 /* SDBCreateDomain.h */,
@@ -215,6 +213,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA763F9613E4C36400158CB2 /* InfoPlist.strings in Resources */,
+				6F1DFE09147BE98B000FDAB4 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,7 +238,6 @@
 				CA3D789913F6FD9200B03036 /* SDBDelete.m in Sources */,
 				CAF9FFA213F8528D0035B0ED /* SDBBatchDelete.m in Sources */,
 				CAF9FFA613F858470035B0ED /* SDBBatchPut.m in Sources */,
-				6F1F5C531475559F00A2D28E /* SDBPutMulti.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

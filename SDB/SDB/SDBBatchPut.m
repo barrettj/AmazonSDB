@@ -38,12 +38,31 @@
         [parameters_ setValue:item forKey:[NSString stringWithFormat:@"Item.%d.ItemName",idx]];
         
         attributes = [items valueForKey:item];
-        [attributes.allKeys enumerateObjectsUsingBlock:^(NSString *attribute, NSUInteger idy, BOOL *stop) {
-            
-            NSString *value = [self urlEncodeValue:[attributes valueForKey:attribute]];
-            [parameters_ setValue:attribute forKey:[NSString stringWithFormat:@"Item.%d.Attribute.%d.Name", idx, idy]];
-            [parameters_ setValue:value forKey:[NSString stringWithFormat:@"Item.%d.Attribute.%d.Value", idx, idy]];
-            
+        
+        __block NSInteger idy = 0;
+        
+        [attributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+  
+            if ([obj isKindOfClass:[NSArray class]]) {
+                [obj enumerateObjectsUsingBlock:^(id multiValueObj, NSUInteger idz, BOOL *stop) {
+                    NSString *stringValue = [self urlEncodeValue:multiValueObj];
+                    
+                    [parameters_ setValue:key forKey:[NSString stringWithFormat:@"Item.%d.Attribute.%d.Name", idx, idy]];
+                    [parameters_ setValue:stringValue forKey:[NSString stringWithFormat:@"Item.%d.Attribute.%d.Value", idx, idy]];
+                    [parameters_ setValue:@"false" forKey:[NSString stringWithFormat:@"Item.%d.Attribute.%d.Replace",idx, idy]];
+                    
+                    ++idy;
+                }];
+            }
+            else {
+                NSString *stringValue = [self urlEncodeValue:obj];
+                
+                [parameters_ setValue:key forKey:[NSString stringWithFormat:@"Item.%d.Attribute.%d.Name", idx, idy]];
+                [parameters_ setValue:stringValue forKey:[NSString stringWithFormat:@"Item.%d.Attribute.%d.Value", idx, idy]];
+                [parameters_ setValue:@"true" forKey:[NSString stringWithFormat:@"Item.%d.Attribute.%d.Replace",idx, idy]];
+                
+                ++idy;
+            }
         }];
         
     }];

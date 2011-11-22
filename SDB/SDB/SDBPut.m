@@ -10,7 +10,7 @@
 
 @interface SDBPut() {
 }
-- (void)addAttributes:(NSDictionary *)attributes multiValue:(NSArray*)multiValue;
+- (void)addAttributes:(NSDictionary *)attributes;
 @end
 
 @implementation SDBPut
@@ -25,35 +25,35 @@
         [parameters_ setValue:@"PutAttributes" forKey:@"Action"];
         [parameters_ setValue:item forKey:@"ItemName"];
         [parameters_ setValue:domain forKey:@"DomainName"];
-        [self addAttributes:attributes multiValue:nil];
+        [self addAttributes:attributes];
     }
     return self;
 }
 
-- (id)initWithItemName:(NSString *)item attributes:(NSDictionary *)attributes multiValue:(NSArray*)multiValue domainName:(NSString *)domain {
-    self = [super init];
-    if (self) {
-        [parameters_ setValue:@"PutAttributes" forKey:@"Action"];
-        [parameters_ setValue:item forKey:@"ItemName"];
-        [parameters_ setValue:domain forKey:@"DomainName"];
-        [self addAttributes:attributes multiValue:multiValue];
-    }
-    return self;
-}
-
-- (void)addAttributes:(NSDictionary *)attributes multiValue:(NSArray*)multiValue {
-    [attributes.allKeys enumerateObjectsUsingBlock:^(NSString *key, NSUInteger idx, BOOL *stop) {
-        NSString *value = [self urlEncodeValue:[attributes valueForKey:key]];
-        
-        //NSLog(@"encoded value: %@", value);
-        
-        [parameters_ setValue:key forKey:[NSString stringWithFormat:@"Attribute.%d.Name",idx]];
-        [parameters_ setValue:value forKey:[NSString stringWithFormat:@"Attribute.%d.Value",idx]];
-        
-        if (multiValue && [multiValue containsObject:key])
-            [parameters_ setValue:@"false" forKey:[NSString stringWithFormat:@"Attribute.%d.Replace",idx]];
-        else
+- (void)addAttributes:(NSDictionary *)attributes {
+    __block NSInteger idx = 0;
+    
+    [attributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if ([obj isKindOfClass:[NSArray class]]) {
+            [obj enumerateObjectsUsingBlock:^(id multiValueObj, NSUInteger idz, BOOL *stop) {
+                NSString *stringValue = [self urlEncodeValue:multiValueObj];
+                
+                [parameters_ setValue:key forKey:[NSString stringWithFormat:@"Attribute.%d.Name",idx]];
+                [parameters_ setValue:stringValue forKey:[NSString stringWithFormat:@"Attribute.%d.Value",idx]];
+                [parameters_ setValue:@"false" forKey:[NSString stringWithFormat:@"Attribute.%d.Replace",idx]];
+                
+                ++idx;
+            }];
+        }
+        else {
+            NSString *stringValue = [self urlEncodeValue:obj];
+            
+            [parameters_ setValue:key forKey:[NSString stringWithFormat:@"Attribute.%d.Name",idx]];
+            [parameters_ setValue:stringValue forKey:[NSString stringWithFormat:@"Attribute.%d.Value",idx]];
             [parameters_ setValue:@"true" forKey:[NSString stringWithFormat:@"Attribute.%d.Replace",idx]];
+            
+            ++idx;
+        }
     }];
 }
 
