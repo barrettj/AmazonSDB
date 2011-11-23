@@ -24,7 +24,7 @@
     self = [super init];
     if (self) {
         [parameters_ setValue:@"Select" forKey:@"Action"];
-        [parameters_ setValue:expression forKey:@"SelectExpression"];
+        [parameters_ setValue:[self urlEncodeString:expression] forKey:@"SelectExpression"];
         if (!multiValue) [parameters_ setValue:@"true" forKey:@"ConsistentRead"];
         if (next) [parameters_ setValue:next forKey:@"NextToken"];
         

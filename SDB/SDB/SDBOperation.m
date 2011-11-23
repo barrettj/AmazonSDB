@@ -16,7 +16,7 @@
 - (NSString *)timeStamp;
 - (NSString *)base64encode:(NSData *)data;
 - (NSString *)escapedSignatureWithString:(NSString *)string;
-- (NSString *)escapedSelectWithString:(NSString *)selectExpression;
+//- (NSString *)escapedSelectWithString:(NSString *)selectExpression;
 
 @end
 
@@ -84,7 +84,23 @@ didStartElement:(NSString *)elementName
     // Update the flag to indicate we are no longer in an attribute (name tags are now for the item)
     if ([elementName isEqualToString:@"Attribute"]) inAttribute_ = NO;
 
-    if ([elementName isEqualToString:@"Error"]) {
+    if ([elementName isEqualToString:@"Message"] && inError_) {
+        inError_ = NO;
+        
+        failed_ = YES;
+        
+        //NSLog(@"SDB Error: %@", currentElementString_);
+        
+        NSMutableArray *errors = [responseDictionary_ objectForKey:@"Errors"];
+        if (!errors) {
+            errors = [[NSMutableArray alloc] init];
+            [responseDictionary_ setObject:errors forKey:@"Errors"];
+        }
+        
+        [errors addObject:currentElementString_];
+    }
+    
+    if ([elementName isEqualToString:@"Error"] && inError_) {
         inError_ = NO;
         
         failed_ = YES;
@@ -145,7 +161,8 @@ didStartElement:(NSString *)elementName
         if ([key rangeOfString:@".Value"].location != NSNotFound)
             [canonicalString appendFormat:@"&%@=%@",key,val]; // values are already encoded
         else
-            [canonicalString appendFormat:@"&%@=%@",key,[self escapedSelectWithString:val]]; 
+            [canonicalString appendFormat:@"&%@=%@",key,val]; 
+            //[canonicalString appendFormat:@"&%@=%@",key,[self escapedSelectWithString:val]]; 
     }];
     return [NSString stringWithString:canonicalString];
 }
@@ -183,7 +200,8 @@ didStartElement:(NSString *)elementName
         if ([key rangeOfString:@".Value"].location != NSNotFound)
             [url appendFormat:@"&%@=%@",key,val]; // values are already encoded
         else
-            [url appendFormat:@"&%@=%@",key,[self escapedSelectWithString:val]]; 
+            [url appendFormat:@"&%@=%@",key,val]; 
+            //[url appendFormat:@"&%@=%@",key,[self escapedSelectWithString:val]]; 
     }];
     //NSLog(@"%@",url);
     return [NSString stringWithString:url];
@@ -266,7 +284,7 @@ didStartElement:(NSString *)elementName
     
 }
 
-- (NSString*)urlEncodeValue:(NSString*)string {
+- (NSString*)urlEncodeString:(NSString*)string {
     CFStringRef urlString = CFURLCreateStringByAddingPercentEscapes(
                                                                     NULL,
                                                                     (__bridge CFStringRef)string,
@@ -278,7 +296,7 @@ didStartElement:(NSString *)elementName
 
 - (NSString*)getObjectValueToSaveToSDB:(id)obj {
     if ([obj isKindOfClass:[NSString class]]) {
-        return [self urlEncodeValue:obj];
+        return [self urlEncodeString:obj];
     }
     
     // could support automatic boxing here...not sure if I want to...
@@ -294,10 +312,11 @@ didStartElement:(NSString *)elementName
     return escapedEquals;
 }
 
-- (NSString *)escapedSelectWithString:(NSString *)selectExpression {
-    NSString *escapedSpaces = [selectExpression stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
-    NSString *escapedAsterisks = [escapedSpaces stringByReplacingOccurrencesOfString:@"*" withString:@"%2A"];
-    return escapedAsterisks;
-}
+// I'm fairly confident this method isn't needed any more
+//- (NSString *)escapedSelectWithString:(NSString *)selectExpression {
+//    selectExpression = [selectExpression stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
+//    selectExpression = [selectExpression stringByReplacingOccurrencesOfString:@"*" withString:@"%2A"];
+//    return selectExpression;
+//}
 
 @end

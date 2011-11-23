@@ -72,5 +72,6 @@
 - (void)parseResponseData:(NSData *)data;
 
 - (NSString*)getObjectValueToSaveToSDB:(id)obj;
+- (NSString*)urlEncodeString:(NSString*)string;
 
 @end
