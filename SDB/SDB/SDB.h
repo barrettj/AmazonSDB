@@ -31,27 +31,27 @@ typedef void (^SDBReceivedDataBlock)(NSDictionary*, SDBOperation*);
 + (void)setAccessKey:(NSString*)access andSecretKey:(NSString*)secret;
 + (BOOL)accessKeysSet;
 
-+ (void)selectWithExpression:(NSString *)expression block:(SDBReceivedDataBlock)block;
-+ (void)selectWithExpression:(NSString *)expression readMultiValue:(BOOL)multiValue block:(SDBReceivedDataBlock)block;
++ (SDBSelect*)selectWithExpression:(NSString *)expression block:(SDBReceivedDataBlock)block;
++ (SDBSelect*)selectWithExpression:(NSString *)expression readMultiValue:(BOOL)multiValue block:(SDBReceivedDataBlock)block;
 
 
-+ (void)getItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceivedDataBlock)block;
-+ (void)getItem:(NSString *)item withAttributes:(NSDictionary *)attributes readMultiValue:(BOOL)multiValue domain:(NSString *)domain block:(SDBReceivedDataBlock)block;
++ (SDBGet*)getItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceivedDataBlock)block;
++ (SDBGet*)getItem:(NSString *)item withAttributes:(NSDictionary *)attributes readMultiValue:(BOOL)multiValue domain:(NSString *)domain block:(SDBReceivedDataBlock)block;
 
 
-+ (void)putItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceivedDataBlock)block;
++ (SDBPut*)putItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceivedDataBlock)block;
 
-+ (void)putItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceivedDataBlock)block;
++ (SDBBatchPut*)putItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceivedDataBlock)block;
 
-+ (void)deleteItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceivedDataBlock)block;
-+ (void)deleteItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceivedDataBlock)block;
++ (SDBDelete*)deleteItem:(NSString *)item withAttributes:(NSDictionary *)attributes domain:(NSString *)domain block:(SDBReceivedDataBlock)block;
++ (SDBBatchDelete*)deleteItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceivedDataBlock)block;
 
-+ (void)listDomainsWithMaximum:(int)max block:(SDBReceivedDataBlock)block;
-+ (void)metadataForDomain:(NSString *)domain block:(SDBReceivedDataBlock)block;
++ (SDBListDomains*)listDomainsWithMaximum:(int)max block:(SDBReceivedDataBlock)block;
++ (SDBDomainMetadata*)metadataForDomain:(NSString *)domain block:(SDBReceivedDataBlock)block;
 
-+ (void)createDomain:(NSString *)domain block:(SDBReceivedDataBlock)block;
-+ (void)deleteDomain:(NSString *)domain block:(SDBReceivedDataBlock)block;
++ (SDBCreateDomain*)createDomain:(NSString *)domain block:(SDBReceivedDataBlock)block;
++ (SDBDeleteDomain*)deleteDomain:(NSString *)domain block:(SDBReceivedDataBlock)block;
 
-+ (void)continueOperation:(SDBOperation*)operation block:(SDBReceivedDataBlock)block;
++ (SDBOperation*)continueOperation:(SDBOperation*)operation block:(SDBReceivedDataBlock)block;
 
 @end
