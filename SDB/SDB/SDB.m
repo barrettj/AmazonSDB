@@ -219,6 +219,21 @@ static NSString* secretKey;
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     
+    if (currentOperation_.cancelled) {
+        [connection cancel];
+        currentOperation_.success = NO;
+        
+        if (timeoutTimer) {
+            [timeoutTimer invalidate];
+            timeoutTimer = nil;
+        }
+        
+        if (self.onReceivedData) {
+            self.onReceivedData(nil, currentOperation_);
+            self.onReceivedData = nil;
+        }
+    }
+    
     [self resetTimeoutTimer];
     
     if (!responseData_)
@@ -228,6 +243,21 @@ static NSString* secretKey;
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    
+    if (currentOperation_.cancelled) {
+        [connection cancel];
+        currentOperation_.success = NO;
+        
+        if (timeoutTimer) {
+            [timeoutTimer invalidate];
+            timeoutTimer = nil;
+        }
+        
+        if (self.onReceivedData) {
+            self.onReceivedData(nil, currentOperation_);
+            self.onReceivedData = nil;
+        }
+    }
     
     [self resetTimeoutTimer];
     
@@ -243,6 +273,8 @@ static NSString* secretKey;
     [currentOperation_ parseResponseData:responseData_];
     //NSLog(@"%@",[[NSString alloc] initWithData:responseData_ encoding:NSUTF8StringEncoding]);
     
+    currentOperation_.success = !currentOperation_.cancelled && !currentOperation_.failed;
+    
     // The parsed data dictionary is sent to the block
     if (self.onReceivedData)
         self.onReceivedData([NSDictionary dictionaryWithDictionary:currentOperation_.responseDictionary], currentOperation_);
@@ -253,6 +285,7 @@ static NSString* secretKey;
 - (void)timeoutReached:(NSTimer*)timer {
     
     currentOperation_.failed = YES;
+    currentOperation_.success = NO;
     
     if (self.onReceivedData) {
         self.onReceivedData(nil, currentOperation_);

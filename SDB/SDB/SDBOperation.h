@@ -54,6 +54,8 @@
     NSString            *accessKey_;
     NSString            *secretKey_;
     BOOL                failed_;
+    BOOL                cancelled_;
+    BOOL                success;
 }
 
 @property (copy, nonatomic)     NSString            *regionEndPoint;
@@ -62,6 +64,8 @@
 @property (readonly, nonatomic) BOOL                hasNextToken;
 
 @property (assign, nonatomic)   BOOL                failed;
+@property (assign, nonatomic)   BOOL                cancelled;
+@property (assign, nonatomic)   BOOL                success;
 
 @property (copy, nonatomic)     NSString            *accessKey;
 @property (copy, nonatomic)     NSString            *secretKey;
