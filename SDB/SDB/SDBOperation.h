@@ -56,12 +56,14 @@
     BOOL                failed_;
     BOOL                cancelled_;
     BOOL                success_;
+    NSString            *nextToken_;
 }
 
 @property (copy, nonatomic)     NSString            *regionEndPoint;
 @property (copy, nonatomic)     NSString            *version;
 @property (readonly, nonatomic) NSMutableDictionary *responseDictionary;
 @property (readonly, nonatomic) BOOL                hasNextToken;
+@property (copy, nonatomic)     NSString            *nextToken;
 
 @property (assign, nonatomic)   BOOL                failed;
 @property (assign, nonatomic)   BOOL                cancelled;

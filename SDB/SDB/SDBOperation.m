@@ -21,7 +21,7 @@
 @end
 
 @implementation SDBOperation
-@synthesize regionEndPoint, version, responseDictionary = responseDictionary_, hasNextToken = hasNextToken_, failed = failed_, accessKey = accessKey_, secretKey = secretKey_, cancelled = cancelled_, success = success_;
+@synthesize regionEndPoint, version, responseDictionary = responseDictionary_, hasNextToken = hasNextToken_, failed = failed_, accessKey = accessKey_, secretKey = secretKey_, cancelled = cancelled_, success = success_, nextToken = nextToken_;
 
 /*
  Sets up parameters common to all SDB Operations

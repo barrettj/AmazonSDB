@@ -190,7 +190,7 @@ static NSString* secretKey;
     if (!operation.hasNextToken)
         return nil;
     
-    NSString *token = [operation.responseDictionary objectForKey:@"NextToken"];
+    NSString *token = operation.nextToken;
     
     token = [token stringByReplacingOccurrencesOfString:@"\n" withString:@"%0A"];
     token = [token stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"];
