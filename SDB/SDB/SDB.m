@@ -192,8 +192,8 @@ static NSString* secretKey;
     
     NSString *token = operation.nextToken;
     
-    token = [token stringByReplacingOccurrencesOfString:@"\n" withString:@"%0A"];
-    token = [token stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"];
+//    token = [token stringByReplacingOccurrencesOfString:@"\n" withString:@"%0A"];
+//    token = [token stringByReplacingOccurrencesOfString:@"=" withString:@"%3D"];
     
     SDBOperation *newOp;
     
@@ -211,7 +211,7 @@ static NSString* secretKey;
     
     SDB *sdb = [[SDB alloc] initWithOperation:newOp andBlock:block];
     [sdb startRequest];   
-    return operation;
+    return newOp;
 }
 
 

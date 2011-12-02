@@ -84,7 +84,7 @@
     // There is more data to retrieve
     else if ([elementName isEqualToString:@"NextToken"]) {
         //[responseDictionary_ setValue:[NSString stringWithString:currentElementString_] forKey:@"NextToken"];
-        self.nextToken = [NSString stringWithString:currentElementString_];
+        self.nextToken = [self urlEncodeString:[NSString stringWithString:currentElementString_]];
         hasNextToken_ = YES;
     }
 }
