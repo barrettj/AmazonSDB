@@ -20,7 +20,7 @@
 
 #define SECONDS_BEFORE_TIMEOUT 45
 
-typedef void (^SDBReceivedDataBlock)(NSDictionary*, SDBOperation*);
+typedef void (^SDBReceivedDataBlock)(NSDictionary* data, SDBOperation* op);
 
 @interface SDB : NSObject <NSURLConnectionDataDelegate> {
     NSTimer *timeoutTimer;

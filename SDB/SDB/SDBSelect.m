@@ -9,7 +9,7 @@
 #import "SDBSelect.h"
 
 @implementation SDBSelect
-@synthesize selectExpression, isMultiValue;
+@synthesize selectExpression, isMultiValue, sortedKeys;
 
 - (id)init {
     return [self initWithExpression:nil nextToken:nil];
@@ -30,6 +30,8 @@
         
         selectExpression = expression;
         isMultiValue = multiValue;
+        
+        self.sortedKeys = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -48,6 +50,9 @@
         
         // Create a new dictionary to store this item's data
         currentItemDictionary_ = [NSMutableDictionary dictionary];
+        
+        // Select statements can be "ordered by", so retain this information
+        [self.sortedKeys addObject:currentItemName_];
     }
     
     // We found a name tag that belongs to the attribute

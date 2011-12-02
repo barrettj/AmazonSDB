@@ -17,4 +17,6 @@
 @property (nonatomic, copy, readonly) NSString* selectExpression;
 @property (nonatomic, assign, readonly) BOOL isMultiValue;
 
+@property (nonatomic, retain) NSMutableArray *sortedKeys;
+
 @end
