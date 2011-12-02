@@ -55,7 +55,7 @@
     NSString            *secretKey_;
     BOOL                failed_;
     BOOL                cancelled_;
-    BOOL                success;
+    BOOL                success_;
 }
 
 @property (copy, nonatomic)     NSString            *regionEndPoint;
