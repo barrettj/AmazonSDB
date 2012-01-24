@@ -56,7 +56,7 @@
     if (selectorIndex <= selectors_.count) {
         SEL nextOperation = [[selectors_ objectAtIndex:selectorIndex-1] pointerValue];
         
-        [self performSelector:nextOperation withObject:nil afterDelay:0.5];
+        [self performSelector:nextOperation withObject:nil afterDelay:0.1];
     }
     else {
         NSLog(@"All Tests Complete!");
@@ -159,7 +159,7 @@
         }
     };
     
-    [SDB selectWithExpression:@"select * from Tester limit 1" block:handler];
+    [SDB selectWithExpression:@"select * from Tester where doesntexist is null or doesntexist = '' limit 1" block:handler];
 }
 
 /**

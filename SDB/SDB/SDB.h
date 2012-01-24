@@ -18,6 +18,27 @@
 #import "SDBBatchPut.h"
 #import "SDBBatchDelete.h"
 
+#if !(TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
+    // only OS X needs this
+    @protocol NSURLConnectionDataDelegate <NSURLConnectionDelegate>
+    @optional
+    - (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response;
+    - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
+
+    - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data;
+
+    - (NSInputStream *)connection:(NSURLConnection *)connection needNewBodyStream:(NSURLRequest *)request;
+    - (void)connection:(NSURLConnection *)connection   didSendBodyData:(NSInteger)bytesWritten
+     totalBytesWritten:(NSInteger)totalBytesWritten
+    totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite;
+
+    - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse;
+
+    - (void)connectionDidFinishLoading:(NSURLConnection *)connection;
+    @end
+
+#endif
+
 #define SECONDS_BEFORE_TIMEOUT 45
 
 typedef void (^SDBReceivedDataBlock)(NSDictionary* data, SDBOperation* op);
