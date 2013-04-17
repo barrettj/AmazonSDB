@@ -289,7 +289,7 @@ didStartElement:(NSString *)elementName
                                                                     NULL,
                                                                     (__bridge CFStringRef)string,
                                                                     NULL,
-                                                                    (CFStringRef)@"!*'\"();:@&=+$,/?%#[]% ",
+                                                                    (CFStringRef)@"!*'\"();:@&=+$,/?%#[]%| ",
                                                                     kCFStringEncodingUTF8 );
     return (__bridge_transfer NSString *)urlString;
 }
