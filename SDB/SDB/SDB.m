@@ -139,6 +139,15 @@ static NSString* secretKey;
     return operation;
 }
 
++ (SDBPutConditional*)putItemConditional:(NSString *)item withAttributes:(NSDictionary *)attributes conditions:(NSDictionary *)conditions domain:(NSString *)domain block:(SDBReceivedDataBlock)block {
+    SDBPutConditional *operation = [[SDBPutConditional alloc] initWithItemName:item attributes:attributes conditions:conditions domainName:domain];
+    operation.accessKey = accessKey;
+    operation.secretKey = secretKey;
+    SDB *sdb = [[SDB alloc] initWithOperation:operation andBlock:block];
+    [sdb startRequest];
+    return operation;
+}
+
 + (SDBBatchPut*)putItems:(NSDictionary *)items domain:(NSString *)domain block:(SDBReceivedDataBlock)block {
     SDBBatchPut *operation = [[SDBBatchPut alloc] initWithItems:items domainName:domain];
     operation.accessKey = accessKey;
