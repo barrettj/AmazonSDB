@@ -58,7 +58,7 @@
     
     // We found an attribute value that needs to be added to the dictionary for the current key
     else if ([elementName isEqualToString:@"Value"]) {
-        id currentData = [currentItemDictionary_ objectForKey:currentKey_];
+        id currentData = currentItemDictionary_[currentKey_];
         
         if (currentData) {
             // if there's already a value, then we're dealing with multi-valued attributes, so turn the result into an array

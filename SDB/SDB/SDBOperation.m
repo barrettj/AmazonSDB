@@ -91,10 +91,10 @@ didStartElement:(NSString *)elementName
         
         //NSLog(@"SDB Error: %@", currentElementString_);
         
-        NSMutableArray *errors = [responseDictionary_ objectForKey:@"Errors"];
+        NSMutableArray *errors = responseDictionary_[@"Errors"];
         if (!errors) {
             errors = [[NSMutableArray alloc] init];
-            [responseDictionary_ setObject:errors forKey:@"Errors"];
+            responseDictionary_[@"Errors"] = errors;
         }
         
         [errors addObject:currentElementString_];
@@ -107,10 +107,10 @@ didStartElement:(NSString *)elementName
         
         //NSLog(@"SDB Error: %@", currentElementString_);
 
-        NSMutableArray *errors = [responseDictionary_ objectForKey:@"Errors"];
+        NSMutableArray *errors = responseDictionary_[@"Errors"];
         if (!errors) {
             errors = [[NSMutableArray alloc] init];
-            [responseDictionary_ setObject:errors forKey:@"Errors"];
+            responseDictionary_[@"Errors"] = errors;
         }
         
         [errors addObject:currentElementString_];
