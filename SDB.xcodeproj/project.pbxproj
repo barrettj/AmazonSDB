@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		25A51446182D95A000AA06D4 /* SDBPutConditional.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A51445182D95A000AA06D4 /* SDBPutConditional.m */; };
 		6F1DFE09147BE98B000FDAB4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 6F1DFE08147BE98B000FDAB4 /* README.md */; };
 		CA0FD8FE13F23DB90050B813 /* SDBPut.m in Sources */ = {isa = PBXBuildFile; fileRef = CA0FD8FD13F23DB90050B813 /* SDBPut.m */; };
 		CA3D788F13F6F04800B03036 /* SDBDeleteDomain.m in Sources */ = {isa = PBXBuildFile; fileRef = CA3D788E13F6F04800B03036 /* SDBDeleteDomain.m */; };
@@ -29,6 +30,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		25A51444182D95A000AA06D4 /* SDBPutConditional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDBPutConditional.h; path = SDB/SDBPutConditional.h; sourceTree = "<group>"; };
+		25A51445182D95A000AA06D4 /* SDBPutConditional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDBPutConditional.m; path = SDB/SDBPutConditional.m; sourceTree = "<group>"; };
 		6F1DFE08147BE98B000FDAB4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = SOURCE_ROOT; };
 		CA0FD8FC13F23DB90050B813 /* SDBPut.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDBPut.h; path = SDB/SDBPut.h; sourceTree = "<group>"; };
 		CA0FD8FD13F23DB90050B813 /* SDBPut.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDBPut.m; path = SDB/SDBPut.m; sourceTree = "<group>"; };
@@ -145,6 +148,8 @@
 				CAB15D4D13E5CA890077F5FB /* SDBSelect.m */,
 				CA0FD8FC13F23DB90050B813 /* SDBPut.h */,
 				CA0FD8FD13F23DB90050B813 /* SDBPut.m */,
+				25A51444182D95A000AA06D4 /* SDBPutConditional.h */,
+				25A51445182D95A000AA06D4 /* SDBPutConditional.m */,
 				CA3D788D13F6F04800B03036 /* SDBDeleteDomain.h */,
 				CA3D788E13F6F04800B03036 /* SDBDeleteDomain.m */,
 				CA3D789113F6F2F200B03036 /* SDBCreateDomain.h */,
@@ -225,6 +230,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA763F9813E4C36400158CB2 /* main.m in Sources */,
+				25A51446182D95A000AA06D4 /* SDBPutConditional.m in Sources */,
 				CA763F9C13E4C36400158CB2 /* AppDelegate.m in Sources */,
 				CA763FB213E4C46700158CB2 /* SDBOperation.m in Sources */,
 				CA763FB313E4C46700158CB2 /* SDBDomainMetadata.m in Sources */,

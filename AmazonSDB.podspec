@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "AmazonSDB"
-  s.version      = "0.0.1"
+  s.version      = "0.0.3"
   s.summary      = "iOS and OS X interface to Amazon's SimpleDB web service."
   s.description  = <<-DESC
                     A fork of brcosm's AmazonSDB (an iOS interface to Amazon's SimpleDB web service).
