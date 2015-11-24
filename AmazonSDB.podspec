@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "AmazonSDB"
-  s.version      = "0.0.1"
+  s.version      = "1.0.1"
   s.summary      = "iOS and OS X interface to Amazon's SimpleDB web service."
   s.description  = <<-DESC
                     A fork of brcosm's AmazonSDB (an iOS interface to Amazon's SimpleDB web service).
@@ -9,9 +9,10 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/barrettj/AmazonSDB"
   s.license      = 'MIT'
   s.authors      = { "Barrett Jacobsen" => "admin@barrettj.com", "Brandon Smith" => "brcosm@gmail.com" }
-  s.source       = { :git => "https://github.com/barrettj/AmazonSDB.git", :tag => "1.0.0" }
+  s.source       = { :git => "https://github.com/barrettj/AmazonSDB.git", :tag => "1.0.1" }
   s.ios.deployment_target = '4.3'
   s.osx.deployment_target = '10.7'
   s.source_files = 'SDB/SDB'
+  s.public_header_files  = 'SDB/SDB/*.h'
   s.requires_arc = true
 end
